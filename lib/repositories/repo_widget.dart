@@ -1,4 +1,6 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:github_app_flutter/routes.dart';
 import 'repository.dart';
 import 'package:github_app_flutter/pullrequests/pull_requests_page.dart';
 
@@ -39,13 +41,15 @@ class RepositoryWidget extends StatelessWidget {
           new Text(repository.ownerLogin)
         ]),
         isThreeLine: true,
-        onTap: () => Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (_) => new PullRequestsPage(
-                    creator: repository.ownerLogin,
-                    repository: repository.name),
-              ),
-            ));
+        onTap: () =>
+            _navigateTo(context, repository.ownerLogin, repository.name));
+  }
+
+  _navigateTo(context, String creator, String repository) {
+    Routes.navigateTo(
+      context,
+      '/pullrequest/$creator/$repository',
+      transition: TransitionType.fadeIn
+    );
   }
 }

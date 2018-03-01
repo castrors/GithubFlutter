@@ -6,13 +6,13 @@ class Routes {
   static final Router _router = new Router();
 
 
-  static var planetDetailHandler = new Handler(
+  static var pullRequestHandler = new Handler(
     handlerFunc: (BuildContext context, Map<String, dynamic> params) {
       return new PullRequestsPage(creator: params["creator"], repository: params["repository"]);
     });
 
   static void initRoutes() {
-    _router.define("/pullrequest/:creator/:repository", handler: planetDetailHandler);
+    _router.define("/pullrequest/:creator/:repository", handler: pullRequestHandler);
   }
 
   static void navigateTo(context, String route, {TransitionType transition}) {
