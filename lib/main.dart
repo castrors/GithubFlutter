@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'repositories/repo_list_page.dart' as repoListPage;
+import 'repositories/repo_list_page.dart';
 
 void main() {
   runApp(new MaterialApp(
-    home: new repoListPage.RepoListPage(),
+    title: "Github Repositories",
+    home: new RepoListPage(),
   ));
 }

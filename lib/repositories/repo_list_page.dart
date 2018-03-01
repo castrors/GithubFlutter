@@ -1,32 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:async_loader/async_loader.dart';
 import 'repository.dart';
 import 'repo_widget.dart';
 
-class RepoListPage extends StatelessWidget {
-  final GlobalKey<AsyncLoaderState> _asyncLoaderState =
-      new GlobalKey<AsyncLoaderState>();
+class RepoListPage extends StatefulWidget {
+  @override
+  RepoListPageState createState() => new RepoListPageState();
+}
+
+class RepoListPageState extends State<RepoListPage> {
+  bool _loading = true;
+  List<Repository> _repositories;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  _fetchData() async {
+    var repositories = await getRepositories();
+    setState(() {
+      _repositories = repositories;
+      _loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    AsyncLoader _asyncLoader = new AsyncLoader(
-      key: _asyncLoaderState,
-      initState: () async => await getRepositories(),
-      renderLoad: () => new CircularProgressIndicator(),
-      renderError: ([error]) => new Text('Error loading repositories'),
-      renderSuccess: ({data}) => _renderData(data),
-    );
-
     return new Scaffold(
         appBar: new AppBar(
           title: new Text("Github Repositories"),
         ),
         body: new Center(
-          child: _asyncLoader,
-        ));
+            child: _loading
+                ? new CircularProgressIndicator()
+                : new ListView(
+                    children: _repositories
+                        .map((repo) => new RepositoryWidget(repo))
+                        .toList(),
+                  )));
   }
-
-  Widget _renderData(data) => new ListView(
-        children: data.map((repo) => new RepositoryWidget(repo)).toList(),
-      );
 }

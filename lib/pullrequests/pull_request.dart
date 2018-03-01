@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -18,7 +19,7 @@ class PullRequest {
   String toString() => 'PullRequest: $title';
 }
 
-getPullRequests(String creator, String repository) async {
+Future<List<PullRequest>> getPullRequests(String creator, String repository) async {
 
   var url = 'https://api.github.com/repos/$creator/$repository/pulls';
 
@@ -27,7 +28,7 @@ getPullRequests(String creator, String repository) async {
 
     
 return JSON.decode(response.body)
-    .map((jsonPullRequest) => new PullRequest.fromJson(jsonPullRequest));
+    .map((jsonPullRequest) => new PullRequest.fromJson(jsonPullRequest)).toList();
 }
 
 main() {

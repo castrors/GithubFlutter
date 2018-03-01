@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +21,7 @@ class Repository {
   String toString() => 'Repository: $name';
 }
 
-getRepositories() async {
+Future<List<Repository>> getRepositories() async {
 
   var url = 'https://api.github.com/search/repositories?q=language:Java&sort=stars';
 
@@ -29,7 +30,7 @@ getRepositories() async {
 
     
 return JSON.decode(response.body)["items"]
-    .map((jsonRepository) => new Repository.fromJson(jsonRepository));
+    .map((jsonRepository) => new Repository.fromJson(jsonRepository)).toList();
 }
 
 main() {
