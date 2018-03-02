@@ -11,19 +11,23 @@ class Repository {
   final String ownerLogin;
 
   Repository.fromJson(Map jsonMap) :
-    name = jsonMap['name'],
-    description = jsonMap['description'],
-    forksCount = jsonMap['forks_count'],
-    stargazersCount = jsonMap['stargazers_count'],
-    ownerAvatar = jsonMap['owner']['avatar_url'],
-    ownerLogin = jsonMap['owner']['login'];
+    name = getValue(jsonMap['name'], ""),
+        description = getValue(jsonMap['description'], ""),
+        forksCount = getValue(jsonMap['forks_count'], 0),
+        stargazersCount = getValue(jsonMap['stargazers_count'], 0),
+        ownerAvatar = getValue(jsonMap['owner']['avatar_url'], ""),
+        ownerLogin = getValue(jsonMap['owner']['login'], "");
+    
+      String toString() => 'Repository: name: $name, description: $description, forksCount: $forksCount, stargazersCount: $stargazersCount, ownerAvatar: $ownerAvatar, ownerLogin: $ownerLogin';
 
-  String toString() => 'Repository: $name';
+      static getValue(key, defaultValue) {
+        return key == null ? defaultValue : key;
+      }
 }
 
-Future<List<Repository>> getRepositories() async {
+Future<List<Repository>> getRepositories(page) async {
 
-  var url = 'https://api.github.com/search/repositories?q=language:Java&sort=stars';
+  var url = 'https://api.github.com/search/repositories?q=language:Java&sort=stars&page=$page';
 
    var response = await http.get(Uri.encodeFull(url),
         headers: {"Accept": "application/json"});
@@ -34,5 +38,5 @@ return JSON.decode(response.body)["items"]
 }
 
 main() {
-  getRepositories();
+  getRepositories(1);
 }

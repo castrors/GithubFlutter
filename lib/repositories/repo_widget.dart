@@ -2,7 +2,6 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:github_app_flutter/routes.dart';
 import 'repository.dart';
-import 'package:github_app_flutter/pullrequests/pull_requests_page.dart';
 
 class RepositoryWidget extends StatelessWidget {
   RepositoryWidget(this.repository);
